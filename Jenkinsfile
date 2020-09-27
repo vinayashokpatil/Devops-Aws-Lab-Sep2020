@@ -33,7 +33,7 @@ pipeline {
                         makeEmptyDirs: false,
                         noDefaultExcludes: false,
                         patternSeparator: '[, ]+',
-                        remoteDirectory: '/artifactsfromjenkins',
+                        remoteDirectory: '/artifactsfromjenkins-warfiles',
                         remoteDirectorySDF: false,
                         removePrefix: '',
                         sourceFiles: '**/*.war'
