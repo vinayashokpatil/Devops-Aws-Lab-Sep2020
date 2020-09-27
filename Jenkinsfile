@@ -36,7 +36,7 @@ pipeline {
                         remoteDirectory: '/artifactsfromjenkins',
                         remoteDirectorySDF: false,
                         removePrefix: '',
-                        sourceFiles: 'target/**/*.war'
+                        sourceFiles: '/var/lib/jenkins/workspace/git-to-ansiblecontroller-deployon-ansibletarget-tomcat/target/WebApp-1.0.2.war'
                         )
                       ], usePromotionTimestamp: false,
                       useWorkspaceInPromotion: false,
