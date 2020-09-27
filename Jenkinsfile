@@ -33,7 +33,7 @@ pipeline {
                         makeEmptyDirs: false,
                         noDefaultExcludes: false,
                         patternSeparator: '[, ]+',
-                        remoteDirectory: '/opt/playbooks/',
+                        remoteDirectory: '/artifactsfromjenkins',
                         remoteDirectorySDF: false,
                         removePrefix: '',
                         sourceFiles: '**/*.war'
