@@ -36,7 +36,7 @@ pipeline {
                         remoteDirectory: '/artifactsfromjenkins',
                         remoteDirectorySDF: false,
                         removePrefix: '',
-                        sourceFiles: '**/*.war'
+                        sourceFiles: 'target/**/*.war'
                         )
                       ], usePromotionTimestamp: false,
                       useWorkspaceInPromotion: false,
