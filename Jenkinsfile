@@ -17,18 +17,9 @@ pipeline {
          sh 'mvn clean install package'
          }
       }
-      stage("deploy the build to tomcat server"){
+      stage("Publish the artifacts to ansible controller machine"){
         steps{
-         deploy adapters: [
-             tomcat9(
-               credentialsId: '1b939522-041e-4c28-88da-358a7abd5098',
-               path: '',
-               url: 'http://3.16.214.222:8080/'
-               )
-             ],
-             contextPath: null,
-             war: '**/*.war'
-             }
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller_instance', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '/opt/playbooks/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '**/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
       }
 
 
