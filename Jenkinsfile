@@ -34,7 +34,7 @@ pipeline {
              nexusVersion: 'nexus3',
              protocol: 'http',
              repository: 'devops-aws-lab',
-             version: "{project.version}"
+             version: "${project.version}"
       }
       }
 
