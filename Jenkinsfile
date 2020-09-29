@@ -47,12 +47,7 @@ pipeline {
 
     stage("Invoke the ansible playbook hosted on ansible controller"){
       steps{
-
-        ansiblePlaybook credentialsId: '37c0c5f4-d8d1-4d5c-bf3e-ce948b50790f',
-        installation: 'ansible',
-        inventory: '/opt/playbooks/hosts',
-        playbook: '/opt/playbooks/deploywar-to-tomcat.yaml'
-
+         sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller_instance', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'ansible-playbook deploywar-to-tomcat.yaml -i hosts', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
      }
     }
 
