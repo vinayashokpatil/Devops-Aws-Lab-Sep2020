@@ -66,6 +66,11 @@
             <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>
         <div class="col-md-4">
+            <h2>Nexus</h2>
+            <p>I have used Nexus3 as my maven repository manager. Jenkins will publish the artifacts to Nexus after succesful build </p>
+            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
             <h2>Jenkins</h2>
             <p>I have used Jenkins as my continuous integration tool. I used both simple piplelines and declarative pipelines for the automation </p>
             <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
