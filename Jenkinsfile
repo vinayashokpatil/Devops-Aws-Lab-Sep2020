@@ -25,7 +25,7 @@ pipeline {
             [
              artifactId: 'VinayDevOpsLab',
              classifier: '',
-             file: "target/${ artifactId }-${ version }.war',
+             file: "target/${ artifactId }-${ version }.war",
              type: 'war']
              ],
              credentialsId: 'nexus3',
