@@ -12,14 +12,14 @@ pipeline {
          echo "so no need to add any steps here in Jenkinsfile"
          }
       }
-      stage("build using Maven"){
+      stage("Build using Maven"){
        steps{
          sh 'mvn clean install package'
          }
       }
-      stage("Publish the artifacts to ansible controller machine"){
+      stage("Publish the artifacts to Nexus"){
         steps{
-            sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller_instance', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//opt//playbooks//artifacts-from-jenkins', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+
       }
 
 

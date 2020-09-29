@@ -1,0 +1,15 @@
+---
+- name: deploy the war file from to target tomcat server
+  hosts: tomcat
+  become: true
+  tasks:
+
+  - name: Display paths of all .war files in dir
+    debug: msg={{ lookup('fileglob', '/opt/playbooks/artifacts-from-jenkins/*.war') }}
+
+  - copy:
+     src: "{{ item }}"
+     dest: /opt/apache-tomcat-9.0.38/webapps
+    with_fileglob:
+     - "/opt/playbooks/artifacts-from-jenkins/*.war"
+...
