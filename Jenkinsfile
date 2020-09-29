@@ -45,5 +45,16 @@ pipeline {
       }
    }
 
+    stage("Invoke the ansible playbook hosted on ansible controller"){
+      steps{
+
+        ansiblePlaybook credentialsId: '37c0c5f4-d8d1-4d5c-bf3e-ce948b50790f',
+        installation: 'ansible',
+        inventory: '/opt/playbooks/hosts',
+        playbook: '/opt/playbooks/deploywar-to-tomcat.yaml'
+
+     }
+    }
+
 }
 }
