@@ -19,7 +19,19 @@ pipeline {
       }
       stage("Publish the artifacts to Nexus"){
         steps{
-               sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller_instance', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//opt//playbooks//artifacts-from-jenkins', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            nexusArtifactUploader artifacts: [
+            [
+             artifactId: 'VinayDevOpsLab',
+             classifier: '', file: 'target/Vinay*.war',
+             type: 'war']
+             ],
+             credentialsId: 'nexus3',
+             groupId: 'lu.amazon.aws.demo',
+             nexusUrl: '172.31.9.39:8081',
+             nexusVersion: 'nexus3',
+             protocol: 'http',
+             repository: 'devops-aws-lab',
+             version: '1.0.2'
       }
 
 
