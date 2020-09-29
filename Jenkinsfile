@@ -20,12 +20,12 @@ pipeline {
       stage("Publish the artifacts to Nexus"){
         steps{
            script{
-            def mavenpom = readMavenPom file: 'pom.xml'
+            def project = readMavenPom file: 'pom.xml'
             nexusArtifactUploader artifacts: [
             [
-             artifactId: 'VinayDevOpsLab',
+             artifactId: "${project.artifactId}",
              classifier: '',
-             file: "target/${ artifactId }-${ version }.war",
+             file: "target/${project.artifactId}-${project.version}.war",
              type: 'war']
              ],
              credentialsId: 'nexus3',
@@ -34,7 +34,7 @@ pipeline {
              nexusVersion: 'nexus3',
              protocol: 'http',
              repository: 'devops-aws-lab',
-             version: "{ version }"
+             version: "{project.version}"
       }
       }
 
