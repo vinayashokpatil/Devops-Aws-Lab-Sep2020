@@ -23,6 +23,8 @@ pipeline {
            script{
              try {
                 def project = readMavenPom file: 'pom.xml'
+
+
                 nexusArtifactUploader artifacts: [
                 [
                 artifactId: "${project.artifactId}",
@@ -47,8 +49,11 @@ pipeline {
       }
 
       stage("Publish the artifacts to ansible controller machine"){
+
       when {
-          artifactId: "${project.artifactId}", value: 'RELEASE'
+          expression {
+          return "${project.name}" == 'RELEASE';
+          }
        }
         steps{
             sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller_instance', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//opt//playbooks//artifacts-from-jenkins', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
