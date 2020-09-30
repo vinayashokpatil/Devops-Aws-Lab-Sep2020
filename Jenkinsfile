@@ -3,7 +3,13 @@ pipeline {
    tools {
      maven 'maven'
    }
+   environment {
+     script{
+      def project = readMavenPom file: 'pom.xml'
+      artifactId = "${project.artifactId}"
+     }
 
+    }
 
    stages{
 
