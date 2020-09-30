@@ -6,16 +6,18 @@ pipeline {
 
    environment {
      //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-      IMAGE = readMavenPom().getArtifactId()
-      VERSION = readMavenPom().getVersion()
+      ArtifactID = readMavenPom().getArtifactId()
+      Version = readMavenPom().getVersion()
+      Name = readMavenPom().getName()
      }
 
    stages{
 
       stage("Checkout"){
        steps{
-         echo "IMANGE is '${IMAGE}'"
-         echo "VERSION is '${VERSION}'"
+         echo "ArtifactID is '${ArtifactID}'"
+         echo "Version is '${Version}'"
+         echo "Name is '${Name}'"
          echo "this is taken care using pipelinescript from SCM in Jenkins"
          echo "so no need to add any steps here in Jenkinsfile"
          }
@@ -58,8 +60,7 @@ pipeline {
       stage("Publish the artifacts to ansible controller machine"){
 
       when {
-          expression {
-          return "${project.name}" == 'RELEASE';
+          environment name: 'Name', value: 'RELEASE'
           }
        }
         steps{
