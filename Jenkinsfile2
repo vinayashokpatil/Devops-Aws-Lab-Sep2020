@@ -31,12 +31,14 @@ pipeline {
       }
       stage("Publish the artifacts to Nexus"){
         steps{
-
+           script{
+             try {
+                def project = readMavenPom file: 'pom.xml'
                 nexusArtifactUploader artifacts: [
                 [
-                artifactId: "${ArtifactID}",
+                artifactId: "${project.artifactId}",
                 classifier: '',
-                file: "target/${ArtifactID}-${Version}.war",
+                file: "target/${project.artifactId}-${project.version}.war",
                 type: 'war']
                 ],
                 credentialsId: 'nexus3',
@@ -45,7 +47,13 @@ pipeline {
                 nexusVersion: 'nexus3',
                 protocol: 'http',
                 repository: 'devops-aws-lab',
-                version: "${Version}"
+                version: "${project.version}"
+               }
+             catch(Exception e) {
+                 echo "repository artifact version already exists"
+             }
+
+             }
            }
       }
 
