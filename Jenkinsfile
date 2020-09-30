@@ -46,12 +46,12 @@ pipeline {
       }
 
       stage("Publish the artifacts to ansible controller machine"){
-
+        when {"${project.artifactId}"=="RELEASE"}
         steps{
             sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller_instance', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//opt//playbooks//artifacts-from-jenkins', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
            }
         }
-   
+
 
     stage("Invoke the ansible playbook hosted on ansible controller"){
       steps{
