@@ -3,18 +3,19 @@ pipeline {
    tools {
      maven 'maven'
    }
-   environment {
-     script{
-      def project = readMavenPom file: 'pom.xml'
-      artifactId = "${project.artifactId}"
-     }
 
-    }
+   environment {
+     //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
+      IMAGE = readMavenPom().getArtifactId()
+      VERSION = readMavenPom().getVersion()
+     }
 
    stages{
 
       stage("Checkout"){
        steps{
+         echo "IMANGE is '${IMAGE}'"
+         echo "VERSION is '${VERSION}'"
          echo "this is taken care using pipelinescript from SCM in Jenkins"
          echo "so no need to add any steps here in Jenkinsfile"
          }
