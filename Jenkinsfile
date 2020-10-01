@@ -11,25 +11,20 @@ pipeline {
       ArtifactID = readMavenPom().getArtifactId()
       Version = readMavenPom().getVersion()
       Name = readMavenPom().getName()
+      Release = ''
     }
-
-
 
    stages{
 
-    script {
-      def NexusRepo = Version.endsWith("SNAPSHOT") ? "devops-aws-lab-SNAPSHOT" : "devops-aws-lab-RELEASE"
-      def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
-      }
 
       stage("Checkout"){
-       steps{
+        steps{
          echo "ArtifactID is '${ArtifactID}'"
          echo "Version is '${Version}'"
          echo "Name is '${Name}'"
          echo "this is taken care using pipelinescript from SCM in Jenkins"
          echo "so no need to add any steps here in Jenkinsfile"
-         }
+        }
       }
       stage("Build using Maven"){
        steps{
@@ -38,6 +33,10 @@ pipeline {
       }
       stage("Publish the artifacts to Nexus"){
         steps{
+        script {
+          def NexusRepo = Version.endsWith("SNAPSHOT") ? "devops-aws-lab-SNAPSHOT" : "devops-aws-lab-RELEASE"
+          def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
+          env.Release = AnsiblePublish
 
                 nexusArtifactUploader artifacts: [
                 [
@@ -55,15 +54,17 @@ pipeline {
                 version: "${Version}"
 
            }
+        }
       }
 
       stage("Publish the artifacts to ansible controller machine"){
 
          when {
-             equals expected: "RELEASE", actual: "${AnsiblePublish}"
+             environment name: 'Release', value: 'RELEASE'
         }
 
         steps{
+            echo "${env.Release}"
             sshPublisher(publishers: [sshPublisherDesc(configName: 'ansible_controller_instance', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '//opt//playbooks//artifacts-from-jenkins', remoteDirectorySDF: false, removePrefix: 'target', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
            }
        }
@@ -72,7 +73,7 @@ pipeline {
     stage("Invoke the ansible playbook hosted on ansible controller"){
 
      when {
-          equals expected: "RELEASE", actual: "${AnsiblePublish}"
+          environment name: 'Release', value: 'RELEASE'
         }
 
       steps{
