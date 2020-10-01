@@ -66,7 +66,7 @@ pipeline {
       stage("Publish the artifacts to ansible controller machine"){
 
          when {
-             environment name: 'Release', value: 'RELEASE'
+             equals expected: "RELEASE", actual: "${Release}"
         }
 
         steps{
@@ -78,7 +78,7 @@ pipeline {
     stage("Invoke the ansible playbook hosted on ansible controller"){
 
      when {
-          environment name: 'Release', value: 'RELEASE'
+          equals expected: "RELEASE", actual: "${Release}"
         }
 
       steps{
