@@ -10,9 +10,8 @@ pipeline {
      //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
       ArtifactID = readMavenPom().getArtifactId()
       Version = readMavenPom().getVersion()
-      NexusRepo = Version.endsWith("SNAPSHOT") ? "devops-aws-lab-SNAPSHOT" : "devops-aws-lab-RELEASE"
-      AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
-      }
+      Name = readMavenPom().getName()
+    }
 
    stages{
 
@@ -33,6 +32,10 @@ pipeline {
       stage("Publish the artifacts to Nexus"){
         steps{
 
+             script {
+                def NexusRepo = Version.endsWith("SNAPSHOT") ? "devops-aws-lab-SNAPSHOT" : "devops-aws-lab-RELEASE"
+                def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
+
                 nexusArtifactUploader artifacts: [
                 [
                 artifactId: "${ArtifactID}",
@@ -48,12 +51,15 @@ pipeline {
                 repository: "${NexusRepo}",
                 version: "${Version}"
            }
+           }
       }
 
       stage("Publish the artifacts to ansible controller machine"){
 
       when {
-          environment name: 'AnsiblePublish', value: 'RELEASE'
+
+           environment name: 'Name', value: 'RELEASE'
+
           }
 
         steps{
@@ -65,7 +71,7 @@ pipeline {
     stage("Invoke the ansible playbook hosted on ansible controller"){
 
      when {
-        environment name: 'AnsiblePublish', value: 'RELEASE'
+        environment name: 'Name', value: 'RELEASE'
         }
 
       steps{
