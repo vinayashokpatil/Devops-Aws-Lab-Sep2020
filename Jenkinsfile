@@ -13,12 +13,14 @@ pipeline {
       Name = readMavenPom().getName()
     }
 
-    script {
-       def NexusRepo = Version.endsWith("SNAPSHOT") ? "devops-aws-lab-SNAPSHOT" : "devops-aws-lab-RELEASE"
-       def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
-       }
+
 
    stages{
+
+    script {
+      def NexusRepo = Version.endsWith("SNAPSHOT") ? "devops-aws-lab-SNAPSHOT" : "devops-aws-lab-RELEASE"
+      def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
+      }
 
       stage("Checkout"){
        steps{
