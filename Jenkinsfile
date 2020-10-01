@@ -57,6 +57,7 @@ pipeline {
       stage("Publish the artifacts to ansible controller machine"){
 
          when {
+             def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
              equals expected: "RELEASE", actual: "${AnsiblePublish}"
         }
 
@@ -69,6 +70,7 @@ pipeline {
     stage("Invoke the ansible playbook hosted on ansible controller"){
 
      when {
+         def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
          equals expected: "RELEASE", actual: "${AnsiblePublish}"
         }
 
