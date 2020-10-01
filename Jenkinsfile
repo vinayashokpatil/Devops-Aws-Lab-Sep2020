@@ -10,8 +10,14 @@ pipeline {
      //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
       ArtifactID = readMavenPom().getArtifactId()
       Version = readMavenPom().getVersion()
+      Release =
       Name = readMavenPom().getName()
     }
+
+    script {
+       def NexusRepo = Version.endsWith("SNAPSHOT") ? "devops-aws-lab-SNAPSHOT" : "devops-aws-lab-RELEASE"
+       def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
+       }
 
    stages{
 
@@ -32,10 +38,6 @@ pipeline {
       stage("Publish the artifacts to Nexus"){
         steps{
 
-             script {
-                def NexusRepo = Version.endsWith("SNAPSHOT") ? "devops-aws-lab-SNAPSHOT" : "devops-aws-lab-RELEASE"
-                def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
-
                 nexusArtifactUploader artifacts: [
                 [
                 artifactId: "${ArtifactID}",
@@ -50,14 +52,13 @@ pipeline {
                 protocol: 'http',
                 repository: "${NexusRepo}",
                 version: "${Version}"
-           }
+
            }
       }
 
       stage("Publish the artifacts to ansible controller machine"){
 
          when {
-             def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
              equals expected: "RELEASE", actual: "${AnsiblePublish}"
         }
 
@@ -70,8 +71,7 @@ pipeline {
     stage("Invoke the ansible playbook hosted on ansible controller"){
 
      when {
-         def AnsiblePublish = Version.endsWith("SNAPSHOT") ? "SNAPSHOT" : "RELEASE"
-         equals expected: "RELEASE", actual: "${AnsiblePublish}"
+          equals expected: "RELEASE", actual: "${AnsiblePublish}"
         }
 
       steps{
