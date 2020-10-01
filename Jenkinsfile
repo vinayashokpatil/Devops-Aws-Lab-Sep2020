@@ -10,7 +10,6 @@ pipeline {
      //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
       ArtifactID = readMavenPom().getArtifactId()
       Version = readMavenPom().getVersion()
-      Release =
       Name = readMavenPom().getName()
     }
 
