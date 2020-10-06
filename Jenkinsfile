@@ -29,6 +29,7 @@ pipeline {
    stages{
       stage("SCM Checkout"){
           steps{
+            echo 'Pulling... ' + env.GIT_BRANCH
             echo "ArtifactID is '${ArtifactID}'"
             echo "Version is '${Version}'"
             echo "Name is '${Name}'"
