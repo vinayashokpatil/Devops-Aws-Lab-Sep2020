@@ -80,6 +80,11 @@
             <p>I have used Ansible as my deployment tool. Wrote couple of playbooks using roles and with out roles</p>
             <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
         </div>
+        <div class="col-md-4">
+            <h2>Terraform</h2>
+            <p>I have used Terraform as my IaC tool. Wrote couple of terraform files to create the EC2 instance which is hosting tomcat server</p>
+            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+        </div>
     </div>
 
     <hr>
