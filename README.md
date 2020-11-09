@@ -1,15 +1,4 @@
-This is a sample Web Application to use during Continuous Integration demos.
+This example uses a simple maven based webapp project.
 
-#Build Instruction
+For build use : mvn clean package
 
-```
-mvn3 clean package
-```
-
-#Deploy instruction
-
-Deploy ```target/WebApp.war``` on Tomcat
- 
-#TODO
- 
-Add instruction to deploy to ElasticBeanstalk
